@@ -24,14 +24,14 @@ export const ConversorNumero = () => {
         setNumeroArabico(e.target.value)
     }
 
-   
+
 
     return (
         <div className={styles.container}>
             <div className={styles.conversorContainer}>
                 <h1 className={styles.title}>Conversor Entre Números Arábicos e Romanos</h1>
                 <div className={styles.numbers}>
-                    <input value={numeroRomano} type="text" className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)}/>
+                    <input value={numeroRomano} type="text" className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)} />
                     <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
                         validarNumeroArabico(e)
                     }} />

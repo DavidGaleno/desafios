@@ -5,16 +5,20 @@ export const ConversorNumero = () => {
     const [numeroArabico,setNumeroArabico] = useState('')
     const padraoNumeroRomano = /^[IVXLCDM]+$/i
 
+    //Essa função procura impedir que o usuário digite uma letra diferente de um número romano
     const validarNumeroRomano = (e: ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.value === '') return setNumeroRomanoValue(numeroRomanoValue.slice(0, -1))
         if (padraoNumeroRomano.test(e.target.value)) return setNumeroRomanoValue(e.target.value.toUpperCase())
     }
 
+    //Essa função permite que somente um dos Inputs esteja preenchido. Ou seja, se o usuário começar a digitar um número romano, o número arábico no outro input será apagado. Da mesma forma para o número romano, caso um número arábico seja digitado
     const checarValorContrario = (e: ChangeEvent<HTMLInputElement>) => {
         if (padraoNumeroRomano.test(e.target.value)) return setNumeroArabico('')
         return setNumeroRomanoValue('')
     }
+
+
 
     return (
         <div className={styles.container}>

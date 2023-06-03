@@ -1,41 +1,43 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import styles from './styles.module.css'
 export const ConversorNumero = () => {
-    const [numeroRomanoValue, setNumeroRomanoValue] = useState('')
-    const [numeroArabico,setNumeroArabico] = useState('')
+    const [numeroRomano, setNumeroRomano] = useState('')
+    const [numeroArabico, setNumeroArabico] = useState('')
     const padraoNumeroRomano = /^[IVXLCDM]+$/i
 
-    //Essa função procura impedir que o usuário digite uma letra diferente de um número romano
-    const validarNumeroRomano = (e: ChangeEvent<HTMLInputElement>) => {
+    //Essa função procura impedir que o usuário digite uma letra diferente de um número romano. A validação aceita letras maículas e minusculas, convertendo sempre para caixa alta
+    const validarNumeroRomano = (e: KeyboardEvent<HTMLInputElement>) => {
+        //Isso garante que o usuário possa apagar o valor digitado no input
+        if (e.key === 'Backspace') return setNumeroRomano(numeroRomano.slice(0, -1))
+        if (!padraoNumeroRomano.test(e.key)) return
 
-        if (e.target.value === '') return setNumeroRomanoValue(numeroRomanoValue.slice(0, -1))
-        if (padraoNumeroRomano.test(e.target.value)) return setNumeroRomanoValue(e.target.value.toUpperCase())
+
+
     }
 
-    //Essa função permite que somente um dos Inputs esteja preenchido. Ou seja, se o usuário começar a digitar um número romano, o número arábico no outro input será apagado. Da mesma forma para o número romano, caso um número arábico seja digitado
-    const checarValorContrario = (e: ChangeEvent<HTMLInputElement>) => {
-        if (padraoNumeroRomano.test(e.target.value)) return setNumeroArabico('')
-        return setNumeroRomanoValue('')
+    //Essa função procura impedir que o usuário digite um número maior que 3999 ou menor que 1
+    const validarNumeroArabico = (e: ChangeEvent<HTMLInputElement>) => {
+        //Isso garante que o usuário possa apagar o valor digitado no input
+        if (e.target.value === '') return setNumeroArabico(numeroRomano.slice(0, -1))
+        const numero = Number(e.target.value)
+        if (numero < 1 || numero > 3999) return
+        setNumeroArabico(e.target.value)
     }
 
-
+   
 
     return (
         <div className={styles.container}>
-            <form className={styles.conversorContainer}>
+            <div className={styles.conversorContainer}>
                 <h1 className={styles.title}>Conversor Entre Números Arábicos e Romanos</h1>
                 <div className={styles.numbers}>
-                    <input value={numeroRomanoValue} type="text" className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onChange={(e) => {
-                        validarNumeroRomano(e)
-                        checarValorContrario(e)
-                    }} />
-                    <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e)=>{
-                        setNumeroArabico(e.target.value)
-                        checarValorContrario(e)
+                    <input value={numeroRomano} type="text" className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)}/>
+                    <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
+                        validarNumeroArabico(e)
                     }} />
                 </div>
                 <button className={styles.conversor}>Converter</button>
-            </form>
+            </div>
         </div>
     )
 }

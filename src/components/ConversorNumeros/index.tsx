@@ -1,5 +1,15 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import styles from './styles.module.css'
+
+const numerosRomanosEmArabicos: Record<string, number> = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000
+}
 export const ConversorNumero = () => {
     const [numeroRomano, setNumeroRomano] = useState('')
     const [numeroArabico, setNumeroArabico] = useState('')
@@ -9,7 +19,70 @@ export const ConversorNumero = () => {
     const validarNumeroRomano = (e: KeyboardEvent<HTMLInputElement>) => {
         //Isso garante que o usuário possa apagar o valor digitado no input
         if (e.key === 'Backspace') return setNumeroRomano(numeroRomano.slice(0, -1))
+
         if (!padraoNumeroRomano.test(e.key)) return
+
+        const numeroInserido = e.key.toUpperCase()
+
+        const ocorrenciasNumero = numeroRomano.split('').filter(numeroArray => numeroArray === numeroInserido)
+
+        if (ocorrenciasNumero.length === 3) return
+
+        if (numeroRomano.length === 0) {
+            setNumeroRomano(numeroRomano + numeroInserido)
+        }
+
+        if (numeroRomano.length === 1) {
+            switch (numeroInserido) {
+                case 'M':
+                    if (numeroRomano[numeroRomano.length - 1] === 'C' || numeroRomano[numeroRomano.length - 1] === 'M') {
+                        setNumeroRomano(numeroRomano + numeroInserido)
+                    }
+                    break
+                case 'D':
+                    if (numeroRomano[numeroRomano.length - 1] === 'C') {
+                        setNumeroRomano(numeroRomano + numeroInserido)
+                    }
+                    break
+                case 'C':
+                    if (numeroRomano[numeroRomano.length - 1] === 'X' || numeroRomano[numeroRomano.length - 1] === 'C') {
+                        setNumeroRomano(numeroRomano + numeroInserido)
+                    }
+                    break
+                case 'L':
+                    if (numeroRomano[numeroRomano.length - 1] === 'X') {
+                        setNumeroRomano(numeroRomano + numeroInserido)
+                    }
+                    break
+                case 'X':
+                    if (numeroRomano[numeroRomano.length - 1] === 'I' || numeroRomano[numeroRomano.length - 1] === 'X') {
+                        setNumeroRomano(numeroRomano + numeroInserido)
+                    }
+                    break
+                case 'V':
+                    if (numeroRomano[numeroRomano.length - 1] === 'I') {
+                        setNumeroRomano(numeroRomano + numeroInserido)
+                    }
+                    break
+                default:
+                    setNumeroRomano(numeroRomano + numeroInserido)
+            }
+        }
+
+
+
+        if (numeroRomano.length >= 2) {
+            if ((numeroRomano[numeroRomano.length - 1] === 'V' && numeroInserido === 'V') || (numeroRomano[numeroRomano.length - 1] === 'L' && numeroInserido === 'L') || (numeroRomano[numeroRomano.length - 1] === 'D' && numeroInserido === 'D')) return
+
+            for (let i = numeroRomano.length - 2; i > 0; i--) {
+                if (numerosRomanosEmArabicos[numeroInserido] > numerosRomanosEmArabicos[numeroRomano[i]]) {
+                    return
+
+                }
+            }
+            setNumeroRomano(numeroRomano + numeroInserido)
+
+        }
 
 
 

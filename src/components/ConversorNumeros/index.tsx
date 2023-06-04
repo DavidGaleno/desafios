@@ -21,11 +21,10 @@ export const ConversorNumero = () => {
         //Isso garante que o usuário possa apagar o valor digitado no input
         if (e.key === 'Backspace') return setNumeroRomano(numeroRomano.slice(0, -1))
 
-        if (!padraoNumeroRomano.test(e.key)) return
-
+        if (!padraoNumeroRomano.test(e.key)) return setNumeroRomano(numeroRomano)
         const numeroInserido = e.key.toUpperCase()
         setNumeroRomano(numeroRomano + numeroInserido)
-
+        
 
 
     }

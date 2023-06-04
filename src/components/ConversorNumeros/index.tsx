@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react'
 import styles from './styles.module.css'
 
 const numerosRomanosEmArabicos: Record<string, number> = {
@@ -23,66 +23,7 @@ export const ConversorNumero = () => {
         if (!padraoNumeroRomano.test(e.key)) return
 
         const numeroInserido = e.key.toUpperCase()
-
-        const ocorrenciasNumero = numeroRomano.split('').filter(numeroArray => numeroArray === numeroInserido)
-
-        if (ocorrenciasNumero.length === 3) return
-
-        if (numeroRomano.length === 0) {
-            setNumeroRomano(numeroRomano + numeroInserido)
-        }
-
-        if (numeroRomano.length === 1) {
-            switch (numeroInserido) {
-                case 'M':
-                    if (numeroRomano[numeroRomano.length - 1] === 'C' || numeroRomano[numeroRomano.length - 1] === 'M') {
-                        setNumeroRomano(numeroRomano + numeroInserido)
-                    }
-                    break
-                case 'D':
-                    if (numeroRomano[numeroRomano.length - 1] === 'C') {
-                        setNumeroRomano(numeroRomano + numeroInserido)
-                    }
-                    break
-                case 'C':
-                    if (numeroRomano[numeroRomano.length - 1] === 'X' || numeroRomano[numeroRomano.length - 1] === 'C') {
-                        setNumeroRomano(numeroRomano + numeroInserido)
-                    }
-                    break
-                case 'L':
-                    if (numeroRomano[numeroRomano.length - 1] === 'X') {
-                        setNumeroRomano(numeroRomano + numeroInserido)
-                    }
-                    break
-                case 'X':
-                    if (numeroRomano[numeroRomano.length - 1] === 'I' || numeroRomano[numeroRomano.length - 1] === 'X') {
-                        setNumeroRomano(numeroRomano + numeroInserido)
-                    }
-                    break
-                case 'V':
-                    if (numeroRomano[numeroRomano.length - 1] === 'I') {
-                        setNumeroRomano(numeroRomano + numeroInserido)
-                    }
-                    break
-                default:
-                    setNumeroRomano(numeroRomano + numeroInserido)
-            }
-        }
-
-
-
-        if (numeroRomano.length >= 2) {
-            if ((numeroRomano[numeroRomano.length - 1] === 'V' && numeroInserido === 'V') || (numeroRomano[numeroRomano.length - 1] === 'L' && numeroInserido === 'L') || (numeroRomano[numeroRomano.length - 1] === 'D' && numeroInserido === 'D')) return
-
-            for (let i = numeroRomano.length - 2; i > 0; i--) {
-                if (numerosRomanosEmArabicos[numeroInserido] > numerosRomanosEmArabicos[numeroRomano[i]]) {
-                    return
-
-                }
-            }
-            setNumeroRomano(numeroRomano + numeroInserido)
-
-        }
+        setNumeroRomano(numeroRomano + numeroInserido)
 
 
 
@@ -97,7 +38,54 @@ export const ConversorNumero = () => {
         setNumeroArabico(e.target.value)
     }
 
+    const converterNumero = () => {
+        let numeroConvertido = 0
+        if (numeroRomano.length === 1) numeroConvertido = numerosRomanosEmArabicos[numeroRomano]
+        if (numeroRomano.length > 1) {
+            for (let i = numeroRomano.length - 1; i >= 0; i--) {
+                if (numerosRomanosEmArabicos[numeroRomano[i - 1]] >= numerosRomanosEmArabicos[numeroRomano[i]]) {
+                    numeroConvertido += numerosRomanosEmArabicos[numeroRomano[i]]
+                    console.log(numeroConvertido)
+                }
+                else if (numerosRomanosEmArabicos[numeroRomano[i - 1]] < numerosRomanosEmArabicos[numeroRomano[i]]) {
+                    numeroConvertido = numerosRomanosEmArabicos[numeroRomano[i]] - numeroConvertido
+                    switch (numeroRomano[i]) {
+                        case 'V':
+                            if (numeroRomano[i - 1] === 'I')
+                                --i
+                            numeroConvertido =  numeroConvertido - numerosRomanosEmArabicos['I'] 
+                            break
+                        case 'X':
+                            if (numeroRomano[i - 1] === 'I')
+                                --i
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['I'] 
+                            break
+                        case 'L':
+                            if (numeroRomano[i - 1] === 'X')
+                                --i
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['X'] 
+                            break
+                        case 'C':
+                            if (numeroRomano[i - 1] === 'X')
+                                --i
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['X'] 
+                            break
+                        case 'D':
+                            if (numeroRomano[i - 1] === 'C') --i
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['C'] 
+                            break
+                        case 'M':
+                            if (numeroRomano[i - 1] === 'C') --i
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['C'] 
+                            break
+                    }
+                }
+                else numeroConvertido += numerosRomanosEmArabicos[numeroRomano[i]]
 
+            }
+        }
+        setNumeroArabico(numeroConvertido.toString())
+    }
 
     return (
         <div className={styles.container}>
@@ -109,7 +97,7 @@ export const ConversorNumero = () => {
                         validarNumeroArabico(e)
                     }} />
                 </div>
-                <button className={styles.conversor}>Converter</button>
+                <button onClick={() => converterNumero()} className={styles.conversor}>Converter</button>
             </div>
         </div>
     )

@@ -23,9 +23,21 @@ export const ConversorNumero = () => {
 
         if (!padraoNumeroRomano.test(e.key)) return setNumeroRomano(numeroRomano)
         const numeroInserido = e.key.toUpperCase()
-        setNumeroRomano(numeroRomano + numeroInserido)
-        
 
+        for (let i = 0; i < numeroRomano.length; i++) {
+            if (numeroRomano[i - 2] === numeroInserido && numeroRomano[i - 1] === numeroInserido && numeroRomano[i] === numeroInserido) return
+
+        }
+
+        if (numeroRomano[numeroRomano.length - 2] === 'I' && numeroRomano[numeroRomano.length - 1] === 'V') return
+        if (numeroRomano[numeroRomano.length - 2] === 'I' && numeroRomano[numeroRomano.length - 1] === 'X') return
+
+
+
+
+
+
+        setNumeroRomano(numeroRomano + numeroInserido)
 
     }
 
@@ -164,7 +176,7 @@ export const ConversorNumero = () => {
 
     const trocarValor = (e: ChangeEvent<HTMLInputElement>) => {
         if (padraoNumeroRomano.test(e.target.value) && numeroArabico) setNumeroArabico('')
-        if(!padraoNumeroRomano.test(e.target.value) && numeroRomano) setNumeroRomano('')
+        if (!padraoNumeroRomano.test(e.target.value) && numeroRomano) setNumeroRomano('')
     }
 
     return (

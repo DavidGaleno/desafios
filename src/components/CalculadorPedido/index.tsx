@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, MouseEvent, useState } from 'react'
 import styles from './styles.module.css'
 
 const valorProdutos: Record<string, number> = {
@@ -17,13 +17,23 @@ const consumos: Record<string, string[]> = {
 
 
 export const CalculadoraPedido = () => {
+    const [novosClientes, setNovosClientes] = useState<string[]>([])
+    const [nomesClientes, setNomesClientes] = useState<string[]>([])
+    const [novosConsumos, setNovosConsumos] = useState<Record<string, string[]>>({})
+    const [novoValorConsumo, setNovoValorConsumo] = useState<Record<string, number>>({})
+    const [novoPagamentoTaxa, setNovoPagamentoTaxa] = useState<Record<string, boolean>>({})
+    const [novoOcorrenciaProduto, setnovoOcorrenciaProduto] = useState<Record<string, number>>({})
     const [clientes, setClientes] = useState(['David', 'Debora', 'Julio'])
     const [produtos, setProdutos] = useState(['Refrigerante', 'Peixe', 'Salada', 'Cerveja'])
 
     const produtosDivididos = ['Salada']
 
-    const calcularValor = () => {
 
+
+    const calcularValor = () => {
+        for (let novoCliente of novosClientes) {
+            setNovosConsumos(prevConsumos => ({ ...prevConsumos, [novoCliente]: ['Salada'] }))
+        }
 
         const pagamentoTaxa: Record<string, boolean> = {
             David: false,
@@ -93,17 +103,25 @@ export const CalculadoraPedido = () => {
 
             }
         }
+    }
 
-
+    const criarCliente = (e: MouseEvent<HTMLButtonElement>) => {
+        setNovosClientes(prevClientes => [...prevClientes, `Cliente${prevClientes.length}`])
+        setNomesClientes(prevNomesClientes => [...prevNomesClientes, `Cliente${prevNomesClientes.length}`])
+        setNovoValorConsumo(prevNovoValorConsumo => ({ ...prevNovoValorConsumo, [`Cliente${novoValorConsumo.length}`]: 0 }))
+        setnovoOcorrenciaProduto(prevnovoOcorrenciaProduto => ({ ...prevnovoOcorrenciaProduto, [`Cliente${novoOcorrenciaProduto.length}`]: 0 }))
+        setNovoPagamentoTaxa(prevPagamentoTaxa => ({ ...prevPagamentoTaxa, [`Cliente${novoPagamentoTaxa.length}`]: false }))
     }
 
     return (
         <div className="container">
-            <input value={clientes[0]} type="text" placeholder='Insira um cliente' />
-            <input value={clientes[1]} type="text" placeholder='Insira um cliente' />
-            <input value={produtos[0]} type="text" placeholder='Insira um produto' />
-            <input value={produtos[1]} type="text" placeholder='Insira um produto' />
-            <button onClick={() => calcularValor()}>Enviar</button>
+            <button onClick={(e) => criarCliente(e)}>Novo Cliente</button>
+            {novosClientes.map((cliente, index) => (
+                <input key={index} type='text' value={nomesClientes[index]} onChange={(e) => nomesClientes[index] === e.target.value} />
+            ))}
+            <button onClick={() => {
+                calcularValor()
+            }}>Enviar</button>
         </div>
     )
 }

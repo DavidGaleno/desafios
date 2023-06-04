@@ -39,6 +39,13 @@ export const ConversorNumero = () => {
     }
 
     const converterNumero = () => {
+        if (numeroRomano) {
+           return converterParaArabico()
+        }
+        
+    }
+    const converterParaArabico = () => {
+
         let numeroConvertido = 0
         if (numeroRomano.length === 1) numeroConvertido = numerosRomanosEmArabicos[numeroRomano]
         if (numeroRomano.length > 1) {
@@ -53,30 +60,30 @@ export const ConversorNumero = () => {
                         case 'V':
                             if (numeroRomano[i - 1] === 'I')
                                 --i
-                            numeroConvertido =  numeroConvertido - numerosRomanosEmArabicos['I'] 
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['I']
                             break
                         case 'X':
                             if (numeroRomano[i - 1] === 'I')
                                 --i
-                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['I'] 
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['I']
                             break
                         case 'L':
                             if (numeroRomano[i - 1] === 'X')
                                 --i
-                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['X'] 
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['X']
                             break
                         case 'C':
                             if (numeroRomano[i - 1] === 'X')
                                 --i
-                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['X'] 
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['X']
                             break
                         case 'D':
                             if (numeroRomano[i - 1] === 'C') --i
-                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['C'] 
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['C']
                             break
                         case 'M':
                             if (numeroRomano[i - 1] === 'C') --i
-                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['C'] 
+                            numeroConvertido = numeroConvertido - numerosRomanosEmArabicos['C']
                             break
                     }
                 }

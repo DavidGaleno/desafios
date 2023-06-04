@@ -22,7 +22,7 @@ export const ConversorNumero = () => {
         const numeroInserido = e.target.value.toUpperCase()
 
 
-        if (!padraoNumeroRomano.test(numeroInserido)) e.preventDefault()
+        if (!padraoNumeroRomano.test(numeroInserido)) setNumeroRomano(numeroRomano)
         else { setNumeroRomano(numeroInserido) }
 
     }
@@ -168,21 +168,21 @@ export const ConversorNumero = () => {
     return (
         <div className={styles.container}>
             <div className={styles.conversorContainer}>
-                <h1 className={styles.title}>Conversor Entre Números Arábicos e Romanos</h1>
+                <h1 className={styles.title}>Conversor Arábico-Romano</h1>
                 {ordem ? <div className={styles.numbers}>
-                    <input value={numeroRomano} type="text" className={styles.numeroArabico} onChange={(e) => {
+                    <input value={numeroRomano} type="text" className={styles.numero} onChange={(e) => {
                         trocarValor(e)
                         validarNumeroRomano(e)
                     }} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
                     <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
-                    <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
+                    <input value={numeroArabico} type="number" className={styles.numero} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
                         validarNumeroArabico(e)
                         trocarValor(e)
                     }} />
                 </div>
                     :
                     <div className={styles.numbers}>
-                        <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
+                        <input value={numeroArabico} type="number" className={styles.numero} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
                             validarNumeroArabico(e)
                             trocarValor(e)
                         }} />
@@ -191,7 +191,7 @@ export const ConversorNumero = () => {
                             trocarValor(e)
                             validarNumeroRomano(e)
                         }
-                        } className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
+                        } className={styles.numero} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
 
                     </div>}
                 <button onClick={() => converterNumero()} className={styles.conversor}>Converter</button>

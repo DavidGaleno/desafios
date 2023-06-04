@@ -22,7 +22,7 @@
     text-align: center;
 }
 
-.numeroArabico {
+.numero {
     height: 3rem;
     width: 17rem;
     font-size: 1.3rem;
@@ -75,7 +75,17 @@
     gap: 3rem;
    }
    .title{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+   }
+   .conversor{
+    font-size: 1.2rem;
+    height: 3.5rem;
+    width: 7rem;
+   }
+   .numero{
+    height: 3rem;
+    width: 15rem;
+    font-size: 1.1rem;
    }
    .container{
     padding: 1rem;

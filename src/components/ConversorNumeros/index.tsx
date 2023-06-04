@@ -13,6 +13,7 @@ const numerosRomanosEmArabicos: Record<string, number> = {
 export const ConversorNumero = () => {
     const [numeroRomano, setNumeroRomano] = useState('')
     const [numeroArabico, setNumeroArabico] = useState('')
+    const [ordem, setOrdem] = useState(false)
     const padraoNumeroRomano = /^[IVXLCDM]+$/i
 
     //Essa função procura impedir que o usuário digite uma letra diferente de um número romano. A validação aceita letras maículas e minusculas, convertendo sempre para caixa alta
@@ -39,16 +40,16 @@ export const ConversorNumero = () => {
     }
 
     const converterNumero = () => {
-        if (numeroRomano) {
-           return converterParaArabico()
-        }
-        
+        if (numeroRomano) return converterParaArabico()
+        return converterParaRomano()
+
     }
     const converterParaArabico = () => {
 
         let numeroConvertido = 0
         if (numeroRomano.length === 1) numeroConvertido = numerosRomanosEmArabicos[numeroRomano]
-        if (numeroRomano.length > 1) {
+
+        else if (numeroRomano.length > 1) {
             for (let i = numeroRomano.length - 1; i >= 0; i--) {
                 if (numerosRomanosEmArabicos[numeroRomano[i - 1]] >= numerosRomanosEmArabicos[numeroRomano[i]]) {
                     numeroConvertido += numerosRomanosEmArabicos[numeroRomano[i]]
@@ -94,16 +95,101 @@ export const ConversorNumero = () => {
         setNumeroArabico(numeroConvertido.toString())
     }
 
+    const converterParaRomano = () => {
+        let numeroConvertido = ''
+        let numeroRepeticoes = 0
+        let number = Number(numeroArabico)
+        if (number >= 1000) {
+            numeroRepeticoes = Math.floor((number / 1000))
+            console.log(numeroRepeticoes)
+            numeroConvertido += 'M'.repeat(numeroRepeticoes)
+            number -= 1000 * numeroRepeticoes
+        }
+        console.log(number)
+        if (number === 900) {
+            numeroConvertido += 'CM'
+            number -= 900
+        }
+        if (number >= 500) {
+            numeroRepeticoes = Math.floor((number / 500))
+            numeroConvertido += 'D'.repeat(numeroRepeticoes)
+            number -= 500 * numeroRepeticoes
+        }
+        if (number === 400) {
+            numeroConvertido += 'CD'
+            number -= 400
+        }
+        if (number >= 100) {
+            numeroRepeticoes = Math.floor((number / 100))
+            numeroConvertido += 'C'.repeat(numeroRepeticoes)
+            number -= 100 * numeroRepeticoes
+        }
+        if (number === 90) {
+            numeroConvertido += 'XC'
+            number -= 90
+        }
+        if (number >= 50) {
+            numeroRepeticoes = Math.floor((number / 50))
+            numeroConvertido += 'L'.repeat(numeroRepeticoes)
+            number -= 50 * numeroRepeticoes
+        }
+        if (number === 40) {
+            numeroConvertido += 'XL'
+            number -= 40
+        }
+        if (number >= 10) {
+            numeroRepeticoes = Math.floor((number / 10))
+            numeroConvertido += 'X'.repeat(numeroRepeticoes)
+            number -= 10 * numeroRepeticoes
+        }
+        if (number === 9) {
+            numeroConvertido += 'IX'
+            number -= 9
+        }
+        if (number >= 5) {
+            numeroRepeticoes = Math.floor((number / 5))
+            numeroConvertido += 'V'.repeat(numeroRepeticoes)
+            number -= 5 * numeroRepeticoes
+        }
+        if (number === 4) {
+            numeroConvertido += 'IV'
+            number -= 4
+        }
+        if (number >= 1) {
+            numeroRepeticoes = Math.floor((number / 1))
+            numeroConvertido += 'I'.repeat(numeroRepeticoes)
+            number -= 1 * numeroRepeticoes
+        }
+        setNumeroRomano(numeroConvertido)
+    }
+
+    const trocarValor = (e: ChangeEvent<HTMLInputElement>) => {
+        if (padraoNumeroRomano.test(e.target.value) && numeroArabico) setNumeroArabico('')
+        if(!padraoNumeroRomano.test(e.target.value) && numeroRomano) setNumeroRomano('')
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.conversorContainer}>
                 <h1 className={styles.title}>Conversor Entre Números Arábicos e Romanos</h1>
-                <div className={styles.numbers}>
-                    <input value={numeroRomano} type="text" className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)} />
+                {ordem ? <div className={styles.numbers}>
+                    <input value={numeroRomano} type="text" className={styles.numeroArabico} onChange={(e) => trocarValor(e)} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)} />
+                    <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
                     <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
                         validarNumeroArabico(e)
+                        trocarValor(e)
                     }} />
                 </div>
+                    :
+                    <div className={styles.numbers}>
+                        <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
+                            validarNumeroArabico(e)
+                            trocarValor(e)
+                        }} />
+                        <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
+                        <input value={numeroRomano} type="text" onChange={(e) => trocarValor(e)} className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)} />
+
+                    </div>}
                 <button onClick={() => converterNumero()} className={styles.conversor}>Converter</button>
             </div>
         </div>

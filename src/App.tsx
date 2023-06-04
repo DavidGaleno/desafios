@@ -1,5 +1,5 @@
 import './App.css'
-import { CalculadoraPedido } from './CalculadorPedido'
+import { CalculadoraPedido } from './components/CalculadorPedido'
 import { ConversorNumero } from './components/ConversorNumeros'
 
 function App() {

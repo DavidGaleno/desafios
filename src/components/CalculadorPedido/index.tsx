@@ -17,12 +17,6 @@ const consumos: Record<string, string[]> = {
 
 
 export const CalculadoraPedido = () => {
-    const [novosClientes, setNovosClientes] = useState<string[]>([])
-    const [nomesClientes, setNomesClientes] = useState<string[]>([])
-    const [novosConsumos, setNovosConsumos] = useState<Record<string, string[]>>({})
-    const [novoValorConsumo, setNovoValorConsumo] = useState<Record<string, number>>({})
-    const [novoPagamentoTaxa, setNovoPagamentoTaxa] = useState<Record<string, boolean>>({})
-    const [novoOcorrenciaProduto, setnovoOcorrenciaProduto] = useState<Record<string, number>>({})
     const [clientes, setClientes] = useState(['David', 'Debora', 'Julio'])
     const [produtos, setProdutos] = useState(['Refrigerante', 'Peixe', 'Salada', 'Cerveja'])
 
@@ -31,9 +25,6 @@ export const CalculadoraPedido = () => {
 
 
     const calcularValor = () => {
-        for (let novoCliente of novosClientes) {
-            setNovosConsumos(prevConsumos => ({ ...prevConsumos, [novoCliente]: ['Salada'] }))
-        }
 
         const pagamentoTaxa: Record<string, boolean> = {
             David: false,
@@ -105,20 +96,9 @@ export const CalculadoraPedido = () => {
         }
     }
 
-    const criarCliente = (e: MouseEvent<HTMLButtonElement>) => {
-        setNovosClientes(prevClientes => [...prevClientes, `Cliente${prevClientes.length}`])
-        setNomesClientes(prevNomesClientes => [...prevNomesClientes, `Cliente${prevNomesClientes.length}`])
-        setNovoValorConsumo(prevNovoValorConsumo => ({ ...prevNovoValorConsumo, [`Cliente${novoValorConsumo.length}`]: 0 }))
-        setnovoOcorrenciaProduto(prevnovoOcorrenciaProduto => ({ ...prevnovoOcorrenciaProduto, [`Cliente${novoOcorrenciaProduto.length}`]: 0 }))
-        setNovoPagamentoTaxa(prevPagamentoTaxa => ({ ...prevPagamentoTaxa, [`Cliente${novoPagamentoTaxa.length}`]: false }))
-    }
-
+    console.log()
     return (
         <div className="container">
-            <button onClick={(e) => criarCliente(e)}>Novo Cliente</button>
-            {novosClientes.map((cliente, index) => (
-                <input key={index} type='text' value={nomesClientes[index]} onChange={(e) => nomesClientes[index] === e.target.value} />
-            ))}
             <button onClick={() => {
                 calcularValor()
             }}>Enviar</button>

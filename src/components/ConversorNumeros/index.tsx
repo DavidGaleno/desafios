@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import styles from './styles.module.css'
 
 const numerosRomanosEmArabicos: Record<string, number> = {
@@ -14,30 +14,16 @@ export const ConversorNumero = () => {
     const [numeroRomano, setNumeroRomano] = useState('')
     const [numeroArabico, setNumeroArabico] = useState('')
     const [ordem, setOrdem] = useState(false)
-    const padraoNumeroRomano = /^[IVXLCDM]+$/i
+    const padraoNumeroRomano = /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i
+
 
     //Essa função procura impedir que o usuário digite uma letra diferente de um número romano. A validação aceita letras maículas e minusculas, convertendo sempre para caixa alta
-    const validarNumeroRomano = (e: KeyboardEvent<HTMLInputElement>) => {
-        //Isso garante que o usuário possa apagar o valor digitado no input
-        if (e.key === 'Backspace') return setNumeroRomano(numeroRomano.slice(0, -1))
-
-        if (!padraoNumeroRomano.test(e.key)) return setNumeroRomano(numeroRomano)
-        const numeroInserido = e.key.toUpperCase()
-
-        for (let i = 0; i < numeroRomano.length; i++) {
-            if (numeroRomano[i - 2] === numeroInserido && numeroRomano[i - 1] === numeroInserido && numeroRomano[i] === numeroInserido) return
-
-        }
-
-        if (numeroRomano[numeroRomano.length - 2] === 'I' && numeroRomano[numeroRomano.length - 1] === 'V') return
-        if (numeroRomano[numeroRomano.length - 2] === 'I' && numeroRomano[numeroRomano.length - 1] === 'X') return
+    const validarNumeroRomano = (e: ChangeEvent<HTMLInputElement>) => {
+        const numeroInserido = e.target.value.toUpperCase()
 
 
-
-
-
-
-        setNumeroRomano(numeroRomano + numeroInserido)
+        if (!padraoNumeroRomano.test(numeroInserido)) e.preventDefault()
+        else { setNumeroRomano(numeroInserido) }
 
     }
 
@@ -184,7 +170,10 @@ export const ConversorNumero = () => {
             <div className={styles.conversorContainer}>
                 <h1 className={styles.title}>Conversor Entre Números Arábicos e Romanos</h1>
                 {ordem ? <div className={styles.numbers}>
-                    <input value={numeroRomano} type="text" className={styles.numeroArabico} onChange={(e) => trocarValor(e)} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)} />
+                    <input value={numeroRomano} type="text" className={styles.numeroArabico} onChange={(e) => {
+                        trocarValor(e)
+                        validarNumeroRomano(e)
+                    }} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
                     <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
                     <input value={numeroArabico} type="number" className={styles.numeroArabico} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
                         validarNumeroArabico(e)
@@ -198,7 +187,11 @@ export const ConversorNumero = () => {
                             trocarValor(e)
                         }} />
                         <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
-                        <input value={numeroRomano} type="text" onChange={(e) => trocarValor(e)} className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' onKeyDown={(e) => validarNumeroRomano(e)} />
+                        <input value={numeroRomano} type="text" onChange={(e) => {
+                            trocarValor(e)
+                            validarNumeroRomano(e)
+                        }
+                        } className={styles.numeroArabico} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
 
                     </div>}
                 <button onClick={() => converterNumero()} className={styles.conversor}>Converter</button>

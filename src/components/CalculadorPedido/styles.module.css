@@ -1,0 +1,55 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    gap: 3rem;
+}
+
+.cadastro {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    font-size: 1.4rem;
+    padding: .5rem;
+}
+
+.input {
+    width: 100%;
+    font-size: 1.4rem;
+    padding: 1rem;
+}
+
+.cliente,
+.produto {
+    font-size: 1.3rem;
+}
+.clientes{
+    display: flex;
+    flex-direction: column;
+}
+.clienteContainer{
+    display: flex;
+    gap: 1rem;
+}
+
+.produtos {
+    font-size: 1.4rem;
+    padding: 1rem;
+    width: 100%;
+}

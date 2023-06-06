@@ -50,7 +50,6 @@ export const CalculadoraPedido = () => {
     const criarPedido = () => {
         setValorTotal([])
         if (!produto || !nome) return
-        console.log('oi')
         if (!valorConsumo[nome]) setClientes(prevClientes => [...prevClientes, nome])
         const produtoComprado = produtos.filter((item: Produto) => item.nome === produto)
 
@@ -63,7 +62,6 @@ export const CalculadoraPedido = () => {
         compra[nome].push(produto)
 
         const updatedCompras = [...compras]
-        console.log(updatedCompras)
         for (let i = 0; i < updatedCompras.length; i++) {
             const item = updatedCompras[i]
             if (item[nome]) {
@@ -97,7 +95,6 @@ export const CalculadoraPedido = () => {
                     divisao: [...updatedProdutos[index].divisao, nome]
                 };
             }
-            console.log(updatedProdutos)
             setProdutos(updatedProdutos);
         }
     };
@@ -109,7 +106,6 @@ export const CalculadoraPedido = () => {
             const quantidadeDivisao = produto.divisao.length > 1 ? produto.divisao.length : 1;
 
             produto.divisao.forEach(cliente => {
-                console.log('oi')
                 copiaValorConsumo[cliente] -= produto.preco / quantidadeDivisao;
             });
         });
@@ -130,10 +126,7 @@ export const CalculadoraPedido = () => {
 
         const updatedCompras = [...compras]
         for (const compra of updatedCompras) {
-            console.log(produtoComprado)
-            console.log(compra[cliente].includes(produtoComprado))
             if (compra[cliente].includes(produtoComprado)) compra[cliente].splice(compra[cliente].indexOf(produtoComprado), 1)
-            console.log(updatedCompras)
             setCompras(updatedCompras)
 
             const copiaValorConsumo = { ...valorConsumo }
@@ -154,33 +147,36 @@ export const CalculadoraPedido = () => {
         for (const compra of updatedCompras) {
             if (Object.keys(compra)[0] === cliente) updatedCompras.splice(updatedCompras.indexOf(compra), 1)
         }
+        setCompras(updatedCompras)
         const updatedProdutos = [...produtos]
         for (const produto of updatedProdutos)
             if (produto.divisao.includes(cliente)) {
                 updatedProdutos.splice(produtos.indexOf(produto), 1)
             }
+
         setProdutos(updatedProdutos)
+    }
+
+    const limpar = () => {
+        setValorConsumo({})
+        setClientes([])
+        setValorTotal([])
+        setNome('')
+        setProduto("")
+        setCompras([])
     }
 
 
     return (
         <div className={styles.container}>
-            <div className={styles.clientes}>
-                {valorTotal.length > 0 && valorTotal.map(valor => (<span className={styles.cliente}>{Object.keys(valor)[0]}: R${Object.values(valor)[0]}</span>
-                ))}
-                {compras.map((compra: Record<string, string[]>, index: number) => (
-                    <div className={styles.clienteContainer}>
-                        <span onClick={(e) => deletarCliente(e, Object.keys(compra)[0])} key={index} className={styles.cliente}>{Object.keys(compra)[0]}:</span>
-                        {Object.values(compra)[0].map((produto, index) => (
-                            <span onClick={(e) => deletarPedido(e, Object.keys(compra)[0], produto)} key={index} className={styles.cliente}>
-                                {produto}{index !== Object.values(compra)[0].length - 1 && ', '}
-                            </span>
-                        ))}
-                    </div>
-                ))
-                }
+            <div className={styles.buttons}>
+                    <button className={styles.button} onClick={() => dividirProduto()}>Dividir Produto</button>
 
-            </div>
+                    <button className={styles.button} onClick={() => criarPedido()}>Criar Pedido</button>
+                    <button className={styles.button} onClick={() => finalizarPedido()}>Finalizar Pedido</button>
+                    <button className={styles.button} onClick={() => limpar()}>Limpar</button>
+
+                </div>
             <form onSubmit={(e) => e.preventDefault()} className={styles.cadastro}>
                 <input className={styles.input} type="text" onChange={(e) => setNome(e.target.value)} value={nome} name="" id="" placeholder='Digite o nome do cliente' required />
                 <select className={styles.produtos} onChange={(e) => setProduto(e.target.value)} value={produto} name="" id="" required>
@@ -188,13 +184,24 @@ export const CalculadoraPedido = () => {
                     {produtos.map((produto: Produto, index: number) => <option key={index} className={styles.produto}>{produto.nome}</option>)}
                 </select>
 
-                <div className={styles.buttons}>
-                    <button className={styles.button} onClick={() => dividirProduto()}>Dividir Produto</button>
-
-                    <button className={styles.button} onClick={() => criarPedido()}>Criar Pedido</button>
-                    <button className={styles.button} onClick={() => finalizarPedido()}>Finalizar Pedido</button>
-                </div>
+               
             </form>
+            <div className={styles.clientes}>
+                {valorTotal.length > 0 && valorTotal.map(valor => (<span className={styles.clienteComprador}>{Object.keys(valor)[0]}: R${Object.values(valor)[0]}</span>
+                ))}
+                {compras.map((compra: Record<string, string[]>, index: number) => (
+                    <div className={styles.clienteContainer}>
+                        <span onClick={(e) => deletarCliente(e, Object.keys(compra)[0])} key={index} className={styles.clienteComprador}>{Object.keys(compra)[0]}</span>
+                        {Object.values(compra)[0].map((produto, index) => (
+                            <span onClick={(e) => deletarPedido(e, Object.keys(compra)[0], produto)} key={index} className={styles.produtoComprado}>
+                                {produto}
+                            </span>
+                        ))}
+                    </div>
+                ))
+                }
+
+            </div>
         </div>
     )
 }

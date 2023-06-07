@@ -33,7 +33,6 @@ export const CalculadoraPedido = () => {
     ]);
     useEffect(() => {
         const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
-        console.log('oi')
         if (produtoComprado?.divisao.includes(nome)) return setTextDividirProduto('Não Dividir Produto')
         return setTextDividirProduto('Dividir Produto')
     }, [nome, produto, produtos])
@@ -70,7 +69,13 @@ export const CalculadoraPedido = () => {
 
 
     const dividirProduto = () => {
+        console.log(compras)
         if (!valorConsumo[nome]) return;
+        if (!produto) return
+        for (const compra of compras) {
+            if (compra[nome] && !compra[nome].includes(produto)) return
+        }
+
         const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
 
         if (produtoComprado) {
@@ -95,12 +100,10 @@ export const CalculadoraPedido = () => {
 
 
             produto.divisao.forEach(cliente => {
-                console.log(copiaValorConsumo[cliente])
                 if (produto.divisao.length > 1) {
                     const quantidadeDivisao = produto.divisao.length;
                     copiaValorConsumo[cliente] -= produto.preco / quantidadeDivisao;
                 }
-                console.log(copiaValorConsumo[cliente])
             });
         });
         const updatedValorTotal = [...valorTotal]

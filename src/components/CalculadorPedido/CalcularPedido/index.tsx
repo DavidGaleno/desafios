@@ -5,6 +5,7 @@ import { Span } from '../components/Span'
 import { Select } from '../components/Select'
 import { IProduto } from '../intefaces/IProduto'
 import { Input } from '../components/Input'
+import { ButtonHome } from '../../../Home/ButtonHome'
 
 
 
@@ -169,6 +170,7 @@ export const CalculadoraPedido = () => {
 
     return (
         <div className={styles.container}>
+            <ButtonHome route='/' text='Voltar'/>
             <div className={styles.buttons}>
                 <Button onClick={() => dividirProduto()} text={textDividirProduto} />
                 <Button onClick={() => criarPedido()} text='Criar Pedido' />

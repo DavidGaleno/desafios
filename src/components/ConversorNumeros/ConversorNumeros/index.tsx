@@ -3,6 +3,7 @@ import styles from './styles.module.css'
 import { Input } from '../Input'
 import { Button } from '../Button'
 import { Title } from '../Title'
+import { ButtonHome } from '../../../Home/ButtonHome'
 
 const numerosRomanosEmArabicos: Record<string, number> = {
     I: 1,
@@ -171,6 +172,7 @@ export const ConversorNumero = () => {
     return (
         <div className={styles.container}>
             <div className={styles.conversorContainer}>
+
                 <Title text="Conversor Arábico-Romano" />
                 {ordem ? <div className={styles.numbers}>
                     <Input type="text" value={numeroRomano} onChange={(e) => {
@@ -197,6 +199,7 @@ export const ConversorNumero = () => {
 
                     </div>}
                 <Button onClick={() => converterNumero()} text='Converter' />
+                <ButtonHome route='/' text='Voltar' />
             </div>
         </div>
     )

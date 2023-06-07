@@ -1,0 +1,21 @@
+.conversor {
+    background: #cdcdce;
+    color: black;
+    border: 0;
+    padding: 1.3rem .9rem;
+    font-size: 1.3rem;
+    border-radius: 10rem;
+    box-shadow: 0px 1px 3px 1px #00000026;
+    box-shadow: 0px 1px 2px 0px #0000004D;
+    cursor: pointer;
+    transition: .2s;
+}
+.conversor:hover{
+    transform: scale(1.1);
+    box-shadow: 0px 2px 6px 2px #00000026;
+    box-shadow: 0px 1px 2px 0px #0000004D;
+}
+
+.conversorLink {
+    color: black;
+}

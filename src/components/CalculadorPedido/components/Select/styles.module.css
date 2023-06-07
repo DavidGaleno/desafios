@@ -3,3 +3,10 @@
     padding: 1rem;
     width: 100%;
 }
+
+@media screen and (max-width:375px){
+    .produtos{
+        font-size: 1.25rem;
+    }
+    
+}

@@ -172,10 +172,10 @@ export const CalculadoraPedido = () => {
         <div className={styles.container}>
             <ButtonHome route='/' text='Voltar'/>
             <div className={styles.buttons}>
-                <Button onClick={() => dividirProduto()} text={textDividirProduto} />
-                <Button onClick={() => criarPedido()} text='Criar Pedido' />
-                <Button onClick={() => finalizarPedido()} text='Finalizar Pedido' />
-                <Button onClick={() => limpar()} text='Limpar' />
+                    <Button onClick={() => dividirProduto()} text={textDividirProduto} />
+                    <Button onClick={() => criarPedido()} text='Criar Pedido' />
+                    <Button onClick={() => finalizarPedido()} text='Finalizar Pedido' />
+                    <Button onClick={() => limpar()} text='Limpar' />
             </div>
             <form onSubmit={(e) => e.preventDefault()} className={styles.cadastro}>
                 <Input maxLength={28} onChange={(e) => setNome(e.target.value)} value={nome} placeholder='Digite o nome do cliente' />

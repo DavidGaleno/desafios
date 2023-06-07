@@ -14,7 +14,7 @@ body{
 }
 
 .cadastro {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -24,21 +24,65 @@ body{
 
 .buttons {
     width: 100%;
-    display: flex;
     justify-content: center;
-    gap: 3rem;
 }
 
+.buttons{
+    display: flex;
+    gap: 3rem;
+
+}
 
 .clientes{
+    width:100%;
     display: flex;
     justify-content:center;
     flex-direction: column;
-    align-items:flex-start;
     gap:3rem;
+
 }
 .clienteContainer{
     display: flex;
     gap: 1rem;
+
 }
 
+
+
+@media screen and (max-width: 1024px) {
+   
+    .buttons{
+        gap: 1rem;
+      
+    }
+    .clienteContainer{
+        overflow-x:scroll;
+        overflow-y: hidden;
+    }
+}
+
+@media screen and (max-width: 768px) {
+.buttons{
+    overflow-y: hidden;
+    flex-wrap: wrap;
+    justify-content:flex-center;
+}
+
+}
+
+
+@media screen and (max-width: 488px) {
+    .buttons {
+        overflow-x:scroll;
+        flex-wrap: nowrap;
+        justify-content:flex-start;
+
+    }
+    
+    } 
+
+
+    
+    
+
+ 

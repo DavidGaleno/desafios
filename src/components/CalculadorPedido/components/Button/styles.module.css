@@ -12,3 +12,27 @@
 .button:hover {
     transform: scale(1.1)
 }
+
+@media screen and (max-width: 1024px) {
+    .button{
+        font-size: 1.1rem;
+        white-space: nowrap; 
+        min-width: auto;
+    }
+}
+@media screen and (max-width: 768px){
+    .button{
+        width:45%;
+    }
+}
+
+@media screen and (max-width: 488px){
+    .button{
+       width:inherit;
+    }
+    .button:hover {
+        transform: scale(1)
+    }
+    
+  
+}

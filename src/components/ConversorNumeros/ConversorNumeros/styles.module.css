@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #cdcdce;
+    background-color: gray;
     padding: 2rem;
 }
 
@@ -42,9 +42,6 @@
     flex-direction: column;
     gap: 3rem;
    }
-   .title{
-    font-size: 1.2rem;
-   }
    .conversor{
     font-size: 1.2rem;
     height: 3.5rem;
@@ -59,3 +56,4 @@
     padding: 1rem;
    }
 }
+

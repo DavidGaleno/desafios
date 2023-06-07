@@ -8,6 +8,7 @@
     cursor: pointer;
 }
 .span{ 
+    white-space:nowrap;
     padding: 1rem 1.5rem;
     font-size: 1.4rem;
     background-color: black;
@@ -16,3 +17,10 @@
     border-radius: .5rem;
     cursor: pointer;
 }
+
+@media screen and (max-width:768px){
+    .span{
+        font-size: 1.2rem;
+    }
+}
+

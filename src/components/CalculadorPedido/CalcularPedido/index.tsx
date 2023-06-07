@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import styles from './styles.module.css'
 import { Button } from '../components/Button'
 import { Span } from '../components/Span'
@@ -10,6 +10,7 @@ import { Input } from '../components/Input'
 
 export const CalculadoraPedido = () => {
     const taxaServico = 0.1
+    const [textDividirProduto, setTextDividirProduto] = useState<string>('Dividir Produto')
     const [valorTotal, setValorTotal] = useState<Record<string, number>[]>([])
     const [produto, setProduto] = useState<string>()
     const [nome, setNome] = useState<string>('')
@@ -30,6 +31,24 @@ export const CalculadoraPedido = () => {
             nome: 'Cerveja', preco: 6, divisao: []
         }
     ]);
+    useEffect(() => {
+        const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
+        console.log('oi')
+        if (produtoComprado?.divisao.includes(nome)) return setTextDividirProduto('Não Dividir Produto')
+        return setTextDividirProduto('Dividir Produto')
+    }, [nome])
+    useEffect(() => {
+        const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
+        console.log('oi')
+        if (produtoComprado?.divisao.includes(nome) && produtoComprado.nome === produto) return setTextDividirProduto('Não Dividir Produto')
+        return setTextDividirProduto('Dividir Produto')
+    }, [produtos])
+    useEffect(() => {
+        const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
+        console.log('oi')
+        if (produtoComprado?.divisao.includes(nome) && produtoComprado.nome === produto) return setTextDividirProduto('Não Dividir Produto')
+        return setTextDividirProduto('Dividir Produto')
+    }, [produto])
 
     const criarPedido = () => {
         setValorTotal([])
@@ -84,13 +103,16 @@ export const CalculadoraPedido = () => {
     };
     const finalizarPedido = () => {
         const copiaValorConsumo = { ...valorConsumo };
-
         produtos.forEach((produto: IProduto) => {
 
-            const quantidadeDivisao = produto.divisao.length > 1 ? produto.divisao.length : 1;
 
             produto.divisao.forEach(cliente => {
-                copiaValorConsumo[cliente] -= produto.preco / quantidadeDivisao;
+                console.log(copiaValorConsumo[cliente])
+                if (produto.divisao.length > 1) {
+                    const quantidadeDivisao = produto.divisao.length;
+                    copiaValorConsumo[cliente] -= produto.preco / quantidadeDivisao;
+                }
+                console.log(copiaValorConsumo[cliente])
             });
         });
         const updatedValorTotal = [...valorTotal]
@@ -103,6 +125,9 @@ export const CalculadoraPedido = () => {
         setValorTotal(updatedValorTotal)
         setNome('')
         setProduto("")
+        const copiaProdutos = produtos
+        copiaProdutos.forEach(produto => produto.divisao = [])
+        setProdutos(copiaProdutos)
         setCompras([])
 
     };
@@ -154,13 +179,13 @@ export const CalculadoraPedido = () => {
     return (
         <div className={styles.container}>
             <div className={styles.buttons}>
-                <Button onClick={() => dividirProduto()} text='Dividir Produto' />
+                <Button onClick={() => dividirProduto()} text={textDividirProduto} />
                 <Button onClick={() => criarPedido()} text='Criar Pedido' />
                 <Button onClick={() => finalizarPedido()} text='Finalizar Pedido' />
                 <Button onClick={() => limpar()} text='Limpar' />
             </div>
             <form onSubmit={(e) => e.preventDefault()} className={styles.cadastro}>
-                <Input maxLength={15} onChange={(e) => setNome(e.target.value)} value={nome} placeholder='Digite o nome do cliente' />
+                <Input maxLength={28} onChange={(e) => setNome(e.target.value)} value={nome} placeholder='Digite o nome do cliente' />
                 <Select options={produtos} value={produto} onChange={(e) => setProduto(e.target.value)} />
             </form>
             <div className={styles.clientes}>

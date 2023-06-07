@@ -1,28 +1,12 @@
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import styles from './styles.module.css'
+import { Button } from '../components/Button'
+import { Span } from '../components/Span'
+import { Select } from '../components/Select'
+import { IProduto } from '../intefaces/IProduto'
+import { Input } from '../components/Input'
 
-const valorProdutos: Record<string, number> = {
-    Refrigerante: 8,
-    Peixe: 20,
-    Salada: 4,
-    Cerveja: 6
-}
 
-const consumos: Record<string, string[]> = {
-    David: ['Refrigerante', 'Peixe'],
-    Debora: ['Refrigerante', 'Salada', 'Peixe'],
-    Julio: ['Salada', 'Cerveja']
-}
-
-interface Produto {
-    nome: string
-    preco: number
-    divisao: string[]
-}
-interface Compra {
-    cliente: string
-    produto: string[]
-}
 
 export const CalculadoraPedido = () => {
     const taxaServico = 0.1
@@ -32,7 +16,7 @@ export const CalculadoraPedido = () => {
     const [clientes, setClientes] = useState<string[]>([])
     const [valorConsumo, setValorConsumo] = useState<Record<string, number>>({})
     const [compras, setCompras] = useState<Record<string, string[]>[]>([])
-    const [produtos, setProdutos] = useState<Produto[]>([
+    const [produtos, setProdutos] = useState<IProduto[]>([
         {
             nome: 'Refrigerante', preco: 8, divisao: []
         },
@@ -51,7 +35,7 @@ export const CalculadoraPedido = () => {
         setValorTotal([])
         if (!produto || !nome) return
         if (!valorConsumo[nome]) setClientes(prevClientes => [...prevClientes, nome])
-        const produtoComprado = produtos.filter((item: Produto) => item.nome === produto)
+        const produtoComprado = produtos.filter((item: IProduto) => item.nome === produto)
 
         const copiaValorConsumo = { ...valorConsumo }
         if (!copiaValorConsumo[nome]) copiaValorConsumo[nome] = 0
@@ -80,7 +64,7 @@ export const CalculadoraPedido = () => {
 
     const dividirProduto = () => {
         if (!valorConsumo[nome]) return;
-        const produtoComprado = produtos.find((item: Produto) => item.nome === produto);
+        const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
 
         if (produtoComprado) {
             const updatedProdutos = [...produtos];
@@ -101,7 +85,7 @@ export const CalculadoraPedido = () => {
     const finalizarPedido = () => {
         const copiaValorConsumo = { ...valorConsumo };
 
-        produtos.forEach((produto: Produto) => {
+        produtos.forEach((produto: IProduto) => {
 
             const quantidadeDivisao = produto.divisao.length > 1 ? produto.divisao.length : 1;
 
@@ -122,7 +106,7 @@ export const CalculadoraPedido = () => {
         setCompras([])
 
     };
-    const deletarPedido = (e: MouseEvent<HTMLSpanElement>, cliente: string, produtoComprado: string) => {
+    const deletarPedido = (_e: MouseEvent<HTMLSpanElement>, cliente: string, produtoComprado: string) => {
 
         const updatedCompras = [...compras]
         for (const compra of updatedCompras) {
@@ -138,7 +122,7 @@ export const CalculadoraPedido = () => {
 
         }
     }
-    const deletarCliente = (e: MouseEvent<HTMLSpanElement>, cliente: string) => {
+    const deletarCliente = (_e: MouseEvent<HTMLSpanElement>, cliente: string) => {
         const updatedClientes = [...clientes]
         updatedClientes.splice(clientes.indexOf(cliente), 1)
         setClientes(updatedClientes)
@@ -170,32 +154,23 @@ export const CalculadoraPedido = () => {
     return (
         <div className={styles.container}>
             <div className={styles.buttons}>
-                    <button className={styles.button} onClick={() => dividirProduto()}>Dividir Produto</button>
-
-                    <button className={styles.button} onClick={() => criarPedido()}>Criar Pedido</button>
-                    <button className={styles.button} onClick={() => finalizarPedido()}>Finalizar Pedido</button>
-                    <button className={styles.button} onClick={() => limpar()}>Limpar</button>
-
-                </div>
+                <Button onClick={() => dividirProduto()} text='Dividir Produto' />
+                <Button onClick={() => criarPedido()} text='Criar Pedido' />
+                <Button onClick={() => finalizarPedido()} text='Finalizar Pedido' />
+                <Button onClick={() => limpar()} text='Limpar' />
+            </div>
             <form onSubmit={(e) => e.preventDefault()} className={styles.cadastro}>
-                <input className={styles.input} type="text" onChange={(e) => setNome(e.target.value)} value={nome} name="" id="" placeholder='Digite o nome do cliente' required />
-                <select className={styles.produtos} onChange={(e) => setProduto(e.target.value)} value={produto} name="" id="" required>
-                    <option value="">Selecione um produto para ser comprado</option>
-                    {produtos.map((produto: Produto, index: number) => <option key={index} className={styles.produto}>{produto.nome}</option>)}
-                </select>
-
-               
+                <Input maxLength={15} onChange={(e) => setNome(e.target.value)} value={nome} placeholder='Digite o nome do cliente' />
+                <Select options={produtos} value={produto} onChange={(e) => setProduto(e.target.value)} />
             </form>
             <div className={styles.clientes}>
-                {valorTotal.length > 0 && valorTotal.map(valor => (<span className={styles.clienteComprador}>{Object.keys(valor)[0]}: R${Object.values(valor)[0]}</span>
+                {valorTotal.length > 0 && valorTotal.map(valor => (<Span text={`${Object.keys(valor)[0]}: R$${Object.values(valor)[0]}`} />
                 ))}
                 {compras.map((compra: Record<string, string[]>, index: number) => (
                     <div className={styles.clienteContainer}>
-                        <span onClick={(e) => deletarCliente(e, Object.keys(compra)[0])} key={index} className={styles.clienteComprador}>{Object.keys(compra)[0]}</span>
+                        <Span text={Object.keys(compra)[0]} onClick={(e) => deletarCliente(e, Object.keys(compra)[0])} index={index} />
                         {Object.values(compra)[0].map((produto, index) => (
-                            <span onClick={(e) => deletarPedido(e, Object.keys(compra)[0], produto)} key={index} className={styles.produtoComprado}>
-                                {produto}
-                            </span>
+                            <Span text={produto} onClick={(e) => deletarPedido(e, Object.keys(compra)[0], produto)} index={index} />
                         ))}
                     </div>
                 ))

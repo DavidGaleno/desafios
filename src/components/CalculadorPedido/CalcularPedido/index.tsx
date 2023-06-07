@@ -36,19 +36,7 @@ export const CalculadoraPedido = () => {
         console.log('oi')
         if (produtoComprado?.divisao.includes(nome)) return setTextDividirProduto('Não Dividir Produto')
         return setTextDividirProduto('Dividir Produto')
-    }, [nome])
-    useEffect(() => {
-        const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
-        console.log('oi')
-        if (produtoComprado?.divisao.includes(nome) && produtoComprado.nome === produto) return setTextDividirProduto('Não Dividir Produto')
-        return setTextDividirProduto('Dividir Produto')
-    }, [produtos])
-    useEffect(() => {
-        const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
-        console.log('oi')
-        if (produtoComprado?.divisao.includes(nome) && produtoComprado.nome === produto) return setTextDividirProduto('Não Dividir Produto')
-        return setTextDividirProduto('Dividir Produto')
-    }, [produto])
+    }, [nome, produto, produtos])
 
     const criarPedido = () => {
         setValorTotal([])

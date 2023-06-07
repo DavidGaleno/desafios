@@ -1,0 +1,9 @@
+.numero {
+    height: 3rem;
+    width: 17rem;
+    font-size: 1.3rem;
+    padding: .5rem;
+    border: 1px solid #1D1B20;
+    border-radius: .4rem;
+    background: #cdcdce;
+}

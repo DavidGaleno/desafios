@@ -1,5 +1,8 @@
 import { ChangeEvent, useState } from 'react'
 import styles from './styles.module.css'
+import { Input } from '../Input'
+import { Button } from '../Button'
+import { Title } from '../Title'
 
 const numerosRomanosEmArabicos: Record<string, number> = {
     I: 1,
@@ -168,33 +171,32 @@ export const ConversorNumero = () => {
     return (
         <div className={styles.container}>
             <div className={styles.conversorContainer}>
-                <h1 className={styles.title}>Conversor Arábico-Romano</h1>
+                <Title text="Conversor Arábico-Romano" />
                 {ordem ? <div className={styles.numbers}>
-                    <input value={numeroRomano} type="text" className={styles.numero} onChange={(e) => {
+                    <Input type="text" value={numeroRomano} onChange={(e) => {
                         trocarValor(e)
                         validarNumeroRomano(e)
-                    }} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
-                    <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
-                    <input value={numeroArabico} type="number" className={styles.numero} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
-                        validarNumeroArabico(e)
+                    }} placeholder='Digite um número romano' />
+                    <Button onClick={() => setOrdem(!ordem)} text='Inverter' />
+                    <Input type="number" value={numeroArabico} onChange={(e) => {
                         trocarValor(e)
-                    }} />
+                        validarNumeroArabico(e)
+                    }} placeholder='Digite um número arábico' />
                 </div>
                     :
                     <div className={styles.numbers}>
-                        <input value={numeroArabico} type="number" className={styles.numero} name="numeroArabico" id="numeroArabico" placeholder='Digite um número arábico' onChange={(e) => {
-                            validarNumeroArabico(e)
+                        <Input type="number" value={numeroArabico} onChange={(e) => {
                             trocarValor(e)
-                        }} />
-                        <button onClick={() => setOrdem(!ordem)} className={styles.conversor}>Inverter</button>
-                        <input value={numeroRomano} type="text" onChange={(e) => {
+                            validarNumeroArabico(e)
+                        }} placeholder='Digite um número arábico' />
+                        <Button onClick={() => setOrdem(!ordem)} text='Inverter' />
+                        <Input type="text" value={numeroRomano} onChange={(e) => {
                             trocarValor(e)
                             validarNumeroRomano(e)
-                        }
-                        } className={styles.numero} name="numeroRomano" id="numeroRomano" placeholder='Digite um número romano' />
+                        }} placeholder='Digite um número romano' />
 
                     </div>}
-                <button onClick={() => converterNumero()} className={styles.conversor}>Converter</button>
+                <Button onClick={() => converterNumero()} text='Converter' />
             </div>
         </div>
     )

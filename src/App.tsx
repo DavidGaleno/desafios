@@ -5,7 +5,7 @@ import { ConversorNumero } from './components/ConversorNumeros/ConversorNumeros'
 function App() {
 
   return (
-    <CalculadoraPedido />
+    <ConversorNumero/>
   )
 }
 

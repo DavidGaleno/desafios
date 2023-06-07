@@ -22,15 +22,7 @@
     text-align: center;
 }
 
-.numero {
-    height: 3rem;
-    width: 17rem;
-    font-size: 1.3rem;
-    padding: .5rem;
-    border: 1px solid #1D1B20;
-    border-radius: .4rem;
-    background: #cdcdce;
-}
+
 
 .numbers {
     width: 100%;
@@ -39,24 +31,6 @@
     align-items: center;
 }
 
-.conversor {
-    background: #cdcdce;
-    color: black;
-    border: 0;
-    height: 4rem;
-    width: 9rem;
-    font-size: 1.3rem;
-    border-radius: 10rem;
-    box-shadow: 0px 1px 3px 1px #00000026;
-    box-shadow: 0px 1px 2px 0px #0000004D;
-    cursor: pointer;
-    transition: .2s;
-}
-.conversor:hover{
-    transform: scale(1.1);
-    box-shadow: 0px 2px 6px 2px #00000026;
-    box-shadow: 0px 1px 2px 0px #0000004D;
-}
 
 @media screen and (max-width:1440px) {
     .conversorContainer{

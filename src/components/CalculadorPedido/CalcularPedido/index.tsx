@@ -56,7 +56,6 @@ export const CalculadoraPedido = () => {
         for (let i = 0; i < updatedCompras.length; i++) {
             const item = updatedCompras[i]
             if (item[nome]) {
-                if (item[nome].includes(produto)) return
                 updatedCompras[i] = { ...item, [nome]: [...item[nome], produto] }
                 setCompras(updatedCompras)
                 return

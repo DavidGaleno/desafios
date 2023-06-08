@@ -69,12 +69,8 @@ export const CalculadoraPedido = () => {
 
 
     const dividirProduto = () => {
-        console.log(compras)
-        if (!valorConsumo[nome]) return;
-        if (!produto) return
-        for (const compra of compras) {
-            if (compra[nome] && !compra[nome].includes(produto)) return
-        }
+        if (!valorConsumo[nome] || !produto || !nome) return;
+        
 
         const produtoComprado = produtos.find((item: IProduto) => item.nome === produto);
 
@@ -169,12 +165,12 @@ export const CalculadoraPedido = () => {
 
     return (
         <div className={styles.container}>
-            <ButtonHome route='/' text='Voltar'/>
+            <ButtonHome route='/' text='Voltar' />
             <div className={styles.buttons}>
-                    <Button onClick={() => dividirProduto()} text={textDividirProduto} />
-                    <Button onClick={() => criarPedido()} text='Criar Pedido' />
-                    <Button onClick={() => finalizarPedido()} text='Finalizar Pedido' />
-                    <Button onClick={() => limpar()} text='Limpar' />
+                <Button onClick={() => dividirProduto()} text={textDividirProduto} />
+                <Button onClick={() => criarPedido()} text='Criar Pedido' />
+                <Button onClick={() => finalizarPedido()} text='Finalizar Pedido' />
+                <Button onClick={() => limpar()} text='Limpar' />
             </div>
             <form onSubmit={(e) => e.preventDefault()} className={styles.cadastro}>
                 <Input maxLength={28} onChange={(e) => setNome(e.target.value)} value={nome} placeholder='Digite o nome do cliente' />

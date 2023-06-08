@@ -40,6 +40,8 @@ export const ConversorNumero = () => {
         setNumeroArabico(e.target.value)
     }
 
+    //Se a variavel numeroRomano estiver preenchida, será feita a conversão para número árabe. 
+    //Se não, será feita a conversão para número romano
     const converterNumero = () => {
         if (numeroRomano) return converterParaArabico()
         return converterParaRomano()
@@ -48,16 +50,20 @@ export const ConversorNumero = () => {
     const converterParaArabico = () => {
 
         let numeroConvertido = 0
+        //Se a largura do número romano for igual a 1, será feita apenas uma consulta direta ao objeto com
+        //os valores da conversão
         if (numeroRomano.length === 1) numeroConvertido = numerosRomanosEmArabicos[numeroRomano]
 
         else if (numeroRomano.length > 1) {
             for (let i = numeroRomano.length - 1; i >= 0; i--) {
+                //Se o número da esquerda for maior que o número da direita, será realizada uma soma entre eles
                 if (numerosRomanosEmArabicos[numeroRomano[i - 1]] >= numerosRomanosEmArabicos[numeroRomano[i]]) {
                     numeroConvertido += numerosRomanosEmArabicos[numeroRomano[i]]
-                    console.log(numeroConvertido)
                 }
+                //Se o número da direita for menor que o número da esquerda, será feita uma subtração
                 else if (numerosRomanosEmArabicos[numeroRomano[i - 1]] < numerosRomanosEmArabicos[numeroRomano[i]]) {
                     numeroConvertido = numerosRomanosEmArabicos[numeroRomano[i]] - numeroConvertido
+                    //Nesse caso, é feito o Switch com casos específicos de números antecessores
                     switch (numeroRomano[i]) {
                         case 'V':
                             if (numeroRomano[i - 1] === 'I')
@@ -89,7 +95,6 @@ export const ConversorNumero = () => {
                             break
                     }
                 }
-                else numeroConvertido += numerosRomanosEmArabicos[numeroRomano[i]]
 
             }
         }
@@ -106,7 +111,6 @@ export const ConversorNumero = () => {
             numeroConvertido += 'M'.repeat(numeroRepeticoes)
             number -= 1000 * numeroRepeticoes
         }
-        console.log(number)
         if (number === 900) {
             numeroConvertido += 'CM'
             number -= 900
